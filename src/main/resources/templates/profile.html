@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel = "stylesheet" href = "static/style2.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">
+        <img src="static/all-seeing-eye.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+        Ramp
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/main}">Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile</a>
+                <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
+                <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
+            </li>
+        </ul>
+        <div class="navbar-text mr-3">
+            <div sec:authorize="isAuthenticated()">
+                <h4 th:text="${username}"></h4>
+            </div>
+        </div>
+        <form class="form-inline my-2 my-lg-0 mr-3">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search by post</button>
+        </form>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-primary" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        PostEditor
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group mt-3">
+            <form method="post" th:action="@{/main}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="text" name="text" class="form-control" placeholder="Text some some some some soooooome"/>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="tag" class="form-control" placeholder="Text some tag">
+                </div>
+                <div class="form-group">
+                    <div class="custom-file">
+                        <input type="file" name="file" class="form-control" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file...</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary ml-2">Save post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div><h3>BOARD OF RAMP ¯\_(ツ)_/¯</h3></div>
+    <div class="card-columns">
+        <div class="card my-3" style="width: 18rem;" th:each="post : ${posts}">
+            <div th:if="${post.filename}">
+                <img class="card-img-top" th:attr="src=@{/img/{path}(path=${post.filename})}">
+            </div>
+            <div class="m-2">
+                <span th:text="${post.text}"></span></br>
+                #<i th:text="${post.tag}"></i>
+            </div>
+            <div class="card-footer text-muted">
+                <a th:attr="href=@{/profile/{id}(id=${post.author.id})}" th:text="${post.authorName}">
+                </a>
+                <div th:if="${post.author.id} == ${id}">
+                    <a class="btn btn-primary" th:href="@{'/profile/' + ${post.author.id} + '?post=' + ${post.id}}">
+                        EDIT
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</div>
+<footer>
+    <h3>AnonChain: All rights reserved(2200)</h3>
+</footer>
+</body>
+</html>
