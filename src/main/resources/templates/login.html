@@ -29,10 +29,14 @@
 </nav>
 <div class="container mt-5">
     <div th:if="${param.error}">
-        Invalid username and password.
+        <div class="invalid-feedback">
+            Invalid username and password.
+        </div>
     </div>
     <div th:if="${param.logout}">
-        You have been logged out.
+        <div class="invalid-feedback">
+            You have been logged out.
+        </div>
     </div>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
@@ -48,19 +52,17 @@
             <input type="password" name="password" class="form-control"/>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <button type="submit" class="btn btn-primary">Sign in</button><br/>
+        <a class="btn btn-primary mt-3" th:href="@{/registration}">Sign up</a>
     </form>
-    <div class="container mt-10">
+    <!--<div class="container mt-10">
         <div>
             <a th:href="@{/registration}"><h3>SIGN UP</h3></a>
         </div>
-    </div>
+    </div>-->
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<footer>
-    <h3>AnonChain: All rights reserved(2200)</h3>
-</footer>
 </body>
 </html>

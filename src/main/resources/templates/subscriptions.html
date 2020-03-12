@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel = "stylesheet" href = "static/style.css">
+    <style>
+        body {
+            background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg);
+       }
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">
+        <img src="static/all-seeing-eye.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+        Ramp
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/main}">Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile</a>
+                <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
+                <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
+            </li>
+        </ul>
+        <div class="navbar-text mr-3">
+            <div sec:authorize="isAuthenticated()">
+                <h4 th:text="${username}"></h4>
+            </div>
+        </div>
+        <form class="form-inline my-2 my-lg-0 mr-3" method="get" th:action="@{/main}">
+            <input class="form-control mr-sm-2" type="text" name="filter" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search by post</button>
+        </form>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-primary" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h3 th:text="${userChannel.username}"></h3>
+    <div>
+        <h5 th:text="${type}"></h5>
+    </div>
+    <ul class="list-group" th:each="user : ${users}">
+        <li class="list-group-item" >
+            <a th:href="@{'/profile/' + ${user.id}}" th:text="${user.username}"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

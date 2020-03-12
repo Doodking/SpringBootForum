@@ -14,6 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -47,6 +50,13 @@ public class PostController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
         Integer id = user.getId();
+        for(Post post : posts) {
+            Set<User> likes = post.getLikes();
+            if(likes.contains(user)) {
+                model.addAttribute("isLikedMe", likes.contains(user));
+            }
+        }
+        model.addAttribute("user", user);
         model.addAttribute("username", username);
         model.addAttribute("id", id);
         model.addAttribute("posts", posts);
@@ -76,7 +86,7 @@ public class PostController {
     }
 
 
-    private void saveFile(@RequestParam("file") MultipartFile file, Post post) throws IOException {
+    void saveFile(@RequestParam("file") MultipartFile file, Post post) throws IOException {
         if(file != null){
             File uploadDir = new File(uploadPath);
             File tempDir = new File("/tmp" + uploadPath);
@@ -97,44 +107,25 @@ public class PostController {
         }
     }
 
-
-    @GetMapping("/profile/{user}")
-    public String userPosts(@AuthenticationPrincipal User currentUser, @PathVariable User user, @RequestParam(required = false) Post post, Model model){
-        User userDob = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = userDob.getUsername();
-        Integer id = userDob.getId();
-        model.addAttribute("username", username);
-        model.addAttribute("id", id);
-        Set<Post> posts = user.getPosts();
-        model.addAttribute("posts", posts);
-        model.addAttribute("post", post);
-        model.addAttribute("isCurrentUser", currentUser.equals(user));
-        return "profile";
-    }
-
-    @PostMapping("/profile/{user}")
-    public String editPost(@AuthenticationPrincipal User currentUser,
-                           @PathVariable User user,
-                           @RequestParam("id") Post post,
-                           @RequestParam("text") String text,
-                           @RequestParam("tag") String tag,
-                           @RequestParam("file") MultipartFile file,
-                           Model model) throws IOException {
-        if(post.getAuthor().equals(currentUser)){
-            if(!StringUtils.isEmptyOrWhitespaceOnly(text)){
-                post.setText(text);
-            }
-            if(!StringUtils.isEmptyOrWhitespaceOnly(tag)){
-                post.setTag(tag);
-            }
-            saveFile(file, post);
-            postRepo.save(post);
+    @GetMapping("/main/{post}/like")
+    public String like(@AuthenticationPrincipal User user,
+                       @PathVariable Post post,
+                       RedirectAttributes redirectAttributes,
+                       @RequestHeader(required = false) String referer,
+                       Model model){
+        Set<User> likes = post.getLikes();
+        if(likes.contains(user)){
+            likes.remove(user);
+        }else{
+            likes.add(user);
         }
-        User userTrue = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer idTrue = user.getId();
-        model.addAttribute("id", idTrue);
-        return "redirect:/profile/" + user;
+        UriComponents uri = UriComponentsBuilder.fromHttpUrl(referer).build();
+        uri.getQueryParams()
+                .entrySet()
+                .forEach(pair -> redirectAttributes.addAttribute(pair.getKey(), pair.getValue()));
+        return "redirect:" + uri.getPath();
     }
+
    /* @PostMapping("/filter")
     public String filter(@RequestParam String filter, Model model){
         Iterable<Post> posts;

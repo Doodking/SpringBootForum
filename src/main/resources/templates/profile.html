@@ -4,10 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel = "stylesheet" href = "static/style2.css">
+    <style>
+       #center { text-align: center; }
+       body {
+            background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg);
+       }
+    </style>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel = "stylesheet" href = "static/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,14 +39,17 @@
                 <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
                 <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/profile/{id}(id=${id})/settings}">Settings</a>
+            </li>
         </ul>
         <div class="navbar-text mr-3">
             <div sec:authorize="isAuthenticated()">
                 <h4 th:text="${username}"></h4>
             </div>
         </div>
-        <form class="form-inline my-2 my-lg-0 mr-3">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0 mr-3" method="get" th:action="@{/main}">
+            <input class="form-control mr-sm-2" type="text" name="filter" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search by post</button>
         </form>
         <div>
@@ -49,6 +59,43 @@
         </div>
     </div>
 </nav>
+<div class = container>
+<div class="my-3">
+    <h3 th:text="${userChannel.username}"></h3>
+</div>
+<div th:if="${isCurrentUser == false}">
+    <div th:if="${isSubscriber == false}">
+        <a class="btn btn-info" th:href="@{'/subscribe/' + ${userChannel.id}}">Subscribe</a>
+    </div>
+    <div th:if="${isSubscriber == true}">
+        <a class="btn btn-info" th:href="@{'/unsubscribe/' + ${userChannel.id}}">Unsubscribe</a>
+    </div>
+</div>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">Subscriptions</div>
+                    <h3 class="card-text">
+                        <a th:href="@{'/subscriptions/' + ${userChannel.id} + '/list'}" th:text="${subscriptionsCount}"></a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">Subscribers</div>
+                    <h3 class="card-text">
+                        <a th:href="@{'/subscribers/' + ${userChannel.id} + '/list'}" th:text="${subscribersCount}"></a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container mt-5">
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         PostEditor
@@ -74,7 +121,7 @@
             </form>
         </div>
     </div>
-    <div><h3>BOARD OF RAMP ¯\_(ツ)_/¯</h3></div>
+    <div id="center" class="mt-3"><h3>BOARD OF RAMP ¯\_(ツ)_/¯</h3></div>
     <div class="card-columns">
         <div class="card my-3" style="width: 18rem;" th:each="post : ${posts}">
             <div th:if="${post.filename}">
@@ -85,12 +132,21 @@
                 #<i th:text="${post.tag}"></i>
             </div>
             <div class="card-footer text-muted">
-                <a th:attr="href=@{/profile/{id}(id=${post.author.id})}" th:text="${post.authorName}">
-                </a>
-                <div th:if="${post.author.id} == ${id}">
-                    <a class="btn btn-primary" th:href="@{'/profile/' + ${post.author.id} + '?post=' + ${post.id}}">
-                        EDIT
+                <div class="row">
+                    <a class="col align-self-center" th:attr="href=@{/profile/{id}(id=${post.author.id})}" th:text="${post.authorName}"></a>
+                    <a class="col align-self-center" th:href="@{'/main/' + ${post.id} + '/like'}">
+                        <div th:if="${#lists.contains(post.likes, user)}">
+                            <i class="fas fa-heart" th:text="${#lists.size(post.likes)}"></i>
+                        </div>
+                        <div th:unless="${#lists.contains(post.likes, user)}">
+                            <i class="far fa-heart" th:text="${#lists.size(post.likes)}"></i>
+                        </div>
                     </a>
+                    <div th:if="${post.author.id} == ${id}">
+                        <a class="col btn btn-primary" th:href="@{'/profile/' + ${post.author.id} + '?post=' + ${post.id}}">
+                            EDIT
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,8 +155,5 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </div>
-<footer>
-    <h3>AnonChain: All rights reserved(2200)</h3>
-</footer>
 </body>
 </html>

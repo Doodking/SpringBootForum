@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel = "stylesheet" href = "static/style.css">
 
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,14 +34,17 @@
                 <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
                 <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/profile/{id}(id=${id})/settings}">Settings</a>
+            </li>
         </ul>
         <div class="navbar-text mr-3">
             <div sec:authorize="isAuthenticated()">
                 <h4 th:text="${username}"></h4>
             </div>
         </div>
-        <form class="form-inline my-2 my-lg-0 mr-3">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0 mr-3" method="get" th:action="@{/main}">
+            <input class="form-control mr-sm-2" type="text" name="filter" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search by post</button>
         </form>
         <div>
@@ -58,7 +63,7 @@
                 </form>
             </div>
         </div>
-        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn btn-primary mt-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Add new post
         </a>
         <div class="collapse" id="collapseExample">
@@ -66,6 +71,9 @@
                 <form method="post" th:action="@{/main}" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="text" name="text" class="form-control" placeholder="Text some some some some soooooome"/>
+                        <!--<div th:if="${textError}">
+                            <p th:text="${textError}"></p>
+                        </div>-->
                     </div>
                     <div class="form-group">
                         <input type="text" name="tag" class="form-control" placeholder="Text some tag">
@@ -82,7 +90,7 @@
                 </form>
             </div>
         </div>
-        <div><h3>BOARD OF RAMP ¯\_(ツ)_/¯</h3></div>
+        <div class="mt-3"><h3>BOARD OF RAMP ¯\_(ツ)_/¯</h3></div>
         <div class="card-columns">
             <div class="card my-3" style="width: 18rem;" th:each="post : ${posts}">
                 <div th:if="${post.filename}">
@@ -93,21 +101,29 @@
                     #<i th:text="${post.tag}"></i>
                 </div>
                 <div class="card-footer text-muted">
-                    <a th:attr="href=@{/profile/{id}(id=${post.author.id})}" th:text="${post.authorName}"></a>
-                    <div th:if="${post.author.id} == ${id}">
-                        <a class="btn btn-primary" th:href="@{'/profile/' + ${post.author.id} + '?post=' + ${post.id}}">
-                            EDIT
+                    <div class="row">
+                        <a class="col align-self-center" th:attr="href=@{/profile/{id}(id=${post.author.id})}" th:text="${post.authorName}"></a>
+                        <a class="col align-self-center" th:href="@{'/main/' + ${post.id} + '/like'}">
+                            <div th:if="${#lists.contains(post.likes, user)}">
+                                <i class="fas fa-heart" th:text="${#lists.size(post.likes)}"></i>
+                            </div>
+                            <div th:unless="${#lists.contains(post.likes, user)}">
+                                <i class="far fa-heart" th:text="${#lists.size(post.likes)}"></i>
+                            </div>
                         </a>
+                        <div th:if="${post.author.id} == ${id}">
+                            <a class="col btn btn-primary" th:href="@{'/profile/' + ${post.author.id} + '?post=' + ${post.id}}">
+                                EDIT
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="https://kit.fontawesome.com/2040e1edc3.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </div>
-<footer>
-    <h4>AnonChain: All rights reserved(2200)</h4>
-</footer>
 </body>
 </html>
