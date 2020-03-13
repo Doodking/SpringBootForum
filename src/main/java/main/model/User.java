@@ -1,6 +1,5 @@
 package main.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +31,8 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String status;
+    private String birthday;
     private String image;
 
     private String activationCode;

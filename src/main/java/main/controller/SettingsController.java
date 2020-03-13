@@ -31,12 +31,19 @@ public class SettingsController {
 
     @PostMapping("/profile/{user}/settings")
     public String updateProfile(@AuthenticationPrincipal User user,
-                                @RequestParam(value = "file", required = false) MultipartFile file,
-                                @RequestParam(value = "username",required = false) String username,
-                                @RequestParam(value = "password", required = false) String password,
+                                @RequestParam(value = "file") MultipartFile file,
+                                @RequestParam(required = false) String status,
+                                @RequestParam(required = false) String birthday,
                                 Model model) throws IOException {
-        user.setUsername(username);
-        user.setPassword(password);
+        /*if(username != null) {
+            user.setUsername(username);
+        }else if(password != null) {
+            user.setPassword(password);
+        }else if(email != null){
+            user.setEmail(email);
+        }*/
+        user.setBirthday(birthday);
+        user.setStatus(status);
         saveFile(file, user);
         userRepo.save(user);
         model.addAttribute("id", user.getId());
