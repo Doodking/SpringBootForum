@@ -1,5 +1,6 @@
 body {
-    background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg); /* Цвет фона и путь к файлу */
+    /*background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg); /* Цвет фона и путь к файлу */
+    background: url(https://www.tokkoro.com/picsup/2973408-simple___mixed-wallpapers.jpg);
 }
 body > footer{
     text-align: center;

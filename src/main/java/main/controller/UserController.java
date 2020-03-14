@@ -56,7 +56,7 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("/profile/{user}")
+    @PutMapping("/profile/{user}")
     public String editPost(@AuthenticationPrincipal User currentUser,
                            @PathVariable User user,
                            @RequestParam("id") Post post,

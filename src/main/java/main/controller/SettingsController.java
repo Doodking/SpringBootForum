@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +32,10 @@ public class SettingsController {
 
     @PostMapping("/profile/{user}/settings")
     public String updateProfile(@AuthenticationPrincipal User user,
-                                @RequestParam(value = "file") MultipartFile file,
-                                @RequestParam(required = false) String status,
-                                @RequestParam(required = false) String birthday,
+                                @RequestParam(value = "file", required = false) MultipartFile file,
+                                /*@RequestParam(value = "username",required = false) String username,
+                                @RequestParam(value = "password", required = false) String password,
+                                @RequestParam(value = "email", required = false) String email,*/
                                 Model model) throws IOException {
         /*if(username != null) {
             user.setUsername(username);
@@ -42,8 +44,6 @@ public class SettingsController {
         }else if(email != null){
             user.setEmail(email);
         }*/
-        user.setBirthday(birthday);
-        user.setStatus(status);
         saveFile(file, user);
         userRepo.save(user);
         model.addAttribute("id", user.getId());

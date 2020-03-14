@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel = "stylesheet" href = "static/style.css">
     <style>
+        #footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+        }
         body {
-            background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg);
-       }
+            background: url(https://www.tokkoro.com/picsup/2973408-simple___mixed-wallpapers.jpg);
+        }
     </style>
 
     <!-- Bootstrap CSS -->
@@ -17,8 +22,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand">
-        <img src="static/all-seeing-eye.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
-        Ramp
+        <img src="https://yt3.ggpht.com/a/AGF-l78ubLQ5YrQl6LDHXASuLCxU5BrVEuWV68YosQ=s900-c-k-c0xffffffff-no-rj-mo" width="30" height="30" class="d-inline-block align-top" alt="">
+        DOT_CONNEXION
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,17 +32,26 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/}">Home <i class="fa fa-home" aria-hidden="true"></i><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/main}">Messages</a>
+                <a class="nav-link" th:href="@{/main}">Messages <i class="fa fa-envelope" aria-hidden="true"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile</a>
+                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile <i class="fa fa-user" aria-hidden="true"></i></a>
                 <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
                 <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/settings'}">Settings <i class="fa fa-cog" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/settings'}">Dialogs <i class="fa fa-comments" aria-hidden="true"></i></a>
+            </li>
         </ul>
+        <div class="navbar-text mr-3">
+            <img src="https://pbs.twimg.com/media/EClZezyXkAEfs5Y.jpg" width="40" height="40" class="rounded-circle" alt="">
+        </div>
         <div class="navbar-text mr-3">
             <div sec:authorize="isAuthenticated()">
                 <h4 th:text="${username}"></h4>
@@ -64,6 +78,19 @@
             <a th:href="@{'/profile/' + ${user.id}}" th:text="${user.username}"></a>
         </li>
     </ul>
+</div>
+<div id="footer" class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h4 class="text-white">Follow the white rabbit @_@</h4>
+            <span class="text-muted">What're you looking for?</span>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
 </div>
 </body>
 </html>

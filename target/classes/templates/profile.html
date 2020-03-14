@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
        #center { text-align: center; }
+       #centerr { text-align: center; }
+       #centerrr { text-align: center; }
        body {
-            background: url(http://www.fonstola.ru/download.php?file=201111/2560x1440/fonstola.ru-49950.jpg);
+            background: url(https://www.tokkoro.com/picsup/2973408-simple___mixed-wallpapers.jpg);
        }
     </style>
 
@@ -19,8 +21,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand">
-        <img src="static/all-seeing-eye.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
-        Ramp
+        <img src="https://yt3.ggpht.com/a/AGF-l78ubLQ5YrQl6LDHXASuLCxU5BrVEuWV68YosQ=s900-c-k-c0xffffffff-no-rj-mo" width="30" height="30" class="d-inline-block align-top" alt="">
+        DOT_CONNEXION
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -29,20 +31,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/}">Home <i class="fa fa-home" aria-hidden="true"></i><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/main}">Messages</a>
+                <a class="nav-link" th:href="@{/main}">Messages <i class="fa fa-envelope" aria-hidden="true"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile</a>
+                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile <i class="fa fa-user" aria-hidden="true"></i></a>
                 <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
                 <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/profile/{id}(id=${id})/settings}">Settings</a>
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/settings'}">Settings <i class="fa fa-cog" aria-hidden="true"></i></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/dialogs'}">Dialogs <i class="fa fa-comments" aria-hidden="true"></i></a>
+            </li>
+            <div th:if="${username == 'admin'}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/profile/' + ${id} + '/admin'}">AdminsPanel <i class="fa fa-lock" aria-hidden="true"></i></a>
+                </li>
+            </div>
         </ul>
+        <div class="navbar-text mr-3">
+            <img src="https://pbs.twimg.com/media/EClZezyXkAEfs5Y.jpg" width="40" height="40" class="rounded-circle" alt="">
+        </div>
         <div class="navbar-text mr-3">
             <div sec:authorize="isAuthenticated()">
                 <h4 th:text="${username}"></h4>
@@ -60,9 +73,28 @@
     </div>
 </nav>
 <div class = container>
-<div class="my-3">
+<!--<div class="my-3">
     <h3 th:text="${userChannel.username}"></h3>
-</div>
+</div>-->
+    <div class="media my-5">
+        <div th:if="${userChannel.image}">
+            <img th:attr="src=@{/img/{path}(path=${user.image})}" class="mr-3" alt="...">
+        </div>
+        <div th:unless="${userChannel.image}">
+            <img src="https://pbs.twimg.com/media/EClZezyXkAEfs5Y.jpg" width="200" height="200" class="mr-3" alt="...">
+        </div>
+        <div class="media-body">
+            <h4 class="mt-0" th:text="${userChannel.username}"></h4>
+            <strong>
+            status: Hello, i hate you!!! Pls, subscribe me @_@</br>
+            birthday: 18.02.95</br>
+                favourite animal: rabbit</br>
+            favourite drug: heroin</br>
+            favourite day in the year: 25 march</br>
+                fuck?</br>
+            </strong>
+        </div>
+    </div>
 <div th:if="${isCurrentUser == false}">
     <div th:if="${isSubscriber == false}">
         <a class="btn btn-info" th:href="@{'/subscribe/' + ${userChannel.id}}">Subscribe</a>
@@ -154,6 +186,19 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</div>
+<div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h4 id="centerr" class="text-white">Follow the white rabbit @_@</h4>
+            <span id="centerrr" class="text-muted">What're you looking for?</span>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
 </div>
 </body>
 </html>

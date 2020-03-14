@@ -17,8 +17,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand">
-        <img src="static/all-seeing-eye.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
-        Ramp
+        <img src="https://yt3.ggpht.com/a/AGF-l78ubLQ5YrQl6LDHXASuLCxU5BrVEuWV68YosQ=s900-c-k-c0xffffffff-no-rj-mo" width="30" height="30" class="d-inline-block align-top" alt="">
+        DOT_CONNEXION
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,20 +27,26 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/}">Home <i class="fa fa-home" aria-hidden="true"></i><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/main}">Messages</a>
+                <a class="nav-link" th:href="@{/main}">Messages <i class="fa fa-envelope" aria-hidden="true"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile</a>
+                <a class="nav-link" th:attr="href=@{/profile/{id}(id=${id})}">Profile <i class="fa fa-user" aria-hidden="true"></i></a>
                 <!--th:attr="href=@{/profile/{id}(id=${id})}"-->
                 <!--th:attr="href=@{/profile/{id}(id=${post.authorName.id})}"-->
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/settings'}">Settings</a>
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/settings'}">Settings <i class="fa fa-cog" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/profile/' + ${id} + '/dialogs'}">Dialogs <i class="fa fa-comments" aria-hidden="true"></i></a>
             </li>
         </ul>
+        <div class="navbar-text mr-3">
+            <img src="https://pbs.twimg.com/media/EClZezyXkAEfs5Y.jpg" width="40" height="40" class="rounded-circle" alt="">
+        </div>
         <div class="navbar-text mr-3">
             <div sec:authorize="isAuthenticated()">
                 <h4 th:text="${username}"></h4>
@@ -57,6 +63,9 @@
         </div>
     </div>
 </nav>
+<!--<div class="container my-5">
+    <img src="https://i.ytimg.com/vi/UFmp6GoVt74/maxresdefault.jpg"  class="rounded" width="1109" height="500" alt="Адаптивные изображения">
+</div>-->
 <div class="container mt-5">
         <div class="jumbotron mt-3">
             <h1 class="display-3">Russian Anonymous Board</h1>
@@ -96,7 +105,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary ml-2">Send!</button>
+                        <button type="submit" class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="bottom" title="Send your post on common board for discussion">Send!</button>
                     </div>
                 </form>
             </div>
@@ -135,6 +144,21 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded mr-2" alt="...">
+            <strong class="mr-auto">Dot_connexion</strong>
+            <small>just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Hello, user! Where have you been for so long, man?
+        </div>
+    </div>
 </div>
 <div class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
